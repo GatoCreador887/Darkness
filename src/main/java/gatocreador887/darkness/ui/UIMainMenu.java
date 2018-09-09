@@ -20,6 +20,7 @@ import gatocreador887.darkness.sprite.Directioned;
 import gatocreador887.darkness.sprite.Ghost;
 import gatocreador887.darkness.sprite.GooBlob;
 import gatocreador887.darkness.sprite.ObliterationVortex;
+import gatocreador887.darkness.sprite.Spikeball;
 import gatocreador887.darkness.sprite.Sprite;
 import gatocreador887.darkness.sprite.Zombie;
 import gatocreador887.darkness.util.graphics.TransparentGradientInImage;
@@ -125,6 +126,8 @@ public class UIMainMenu extends UI {
 					directioned = new Ghost(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null, Ghost.Type.INFERNAL);
 				} else if (ThreadLocalRandom.current().nextFloat() < 0.125f) {
 					directioned = new GooBlob(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null);
+				} else if (ThreadLocalRandom.current().nextFloat() < 0.125f) {
+					directioned = new Spikeball(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null);
 				} else if (ThreadLocalRandom.current().nextFloat() < 0.15f) {
 					directioned = new Brain(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null);
 				} else if (ThreadLocalRandom.current().nextFloat() < 0.3f) {

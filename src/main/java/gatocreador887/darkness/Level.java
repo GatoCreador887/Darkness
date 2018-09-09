@@ -19,6 +19,7 @@ import gatocreador887.darkness.sprite.Ghost;
 import gatocreador887.darkness.sprite.GooBlob;
 import gatocreador887.darkness.sprite.ObliterationVortex;
 import gatocreador887.darkness.sprite.Player;
+import gatocreador887.darkness.sprite.Spikeball;
 import gatocreador887.darkness.sprite.Sprite;
 import gatocreador887.darkness.sprite.Zombie;
 import gatocreador887.darkness.ui.UIMainMenu;
@@ -269,6 +270,10 @@ public class Level {
 						this.sprites.add(new GooBlob(xPos, yPos, this));
 					}
 					
+					if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+						this.sprites.add(new Spikeball(xPos, yPos, this));
+					}
+					
 					if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {
 						this.sprites.add(new Ghost(xPos, yPos, this, Ghost.Type.INFERNAL));
 					}
@@ -388,6 +393,10 @@ public class Level {
 						
 						if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
 							this.sprites.add(new GooBlob(xPos, yPos, this));
+						}
+						
+						if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+							this.sprites.add(new Spikeball(xPos, yPos, this));
 						}
 						
 						if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {

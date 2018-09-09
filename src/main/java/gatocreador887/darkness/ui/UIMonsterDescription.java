@@ -10,6 +10,7 @@ import gatocreador887.darkness.sprite.Brain;
 import gatocreador887.darkness.sprite.Ghost;
 import gatocreador887.darkness.sprite.GooBlob;
 import gatocreador887.darkness.sprite.ObliterationVortex;
+import gatocreador887.darkness.sprite.Spikeball;
 import gatocreador887.darkness.sprite.Zombie;
 
 public class UIMonsterDescription extends UI {
@@ -65,10 +66,24 @@ public class UIMonsterDescription extends UI {
 			case "goo_blob":
 				monsterDescription = 
 					"A blob of green goo that hops around, and, when close enough, shoots small orbs of goo at you.\n" +
-					"It is the third least common Monster in the Darkness.";
+					"It is the fourth least common Monster in the Darkness.";
 				
 				monsterName = "Goo Blob";
 				monsterImage = GooBlob.IMAGE;
+				break;
+			case "spikeball":
+				monsterDescription = 
+					"A ball of spikes that, when close enough, shoots its spikes at you. When none of its spikes are left, it disappears.\n" +
+					"It is the third least common Monster in the Darkness.";
+				
+				monsterName = "Spikeball";
+				
+				if (step % 15 <= 3) {
+					monsterImage = Spikeball.IMAGE_0;
+				} else {
+					monsterImage = Spikeball.IMAGE_1;
+				}
+				
 				break;
 			case "infernal_ghost":
 				monsterDescription = 
