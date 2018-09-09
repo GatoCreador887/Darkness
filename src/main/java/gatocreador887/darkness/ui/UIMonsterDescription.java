@@ -78,7 +78,7 @@ public class UIMonsterDescription extends UI {
 				
 				monsterName = "Spikeball";
 				
-				if (step % 15 <= 3) {
+				if (step % 7 <= 3) {
 					monsterImage = Spikeball.IMAGE_0;
 				} else {
 					monsterImage = Spikeball.IMAGE_1;
