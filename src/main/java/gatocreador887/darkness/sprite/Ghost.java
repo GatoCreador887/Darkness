@@ -47,7 +47,7 @@ public class Ghost extends Directioned implements MeleeMonster {
 			this.direction = (270.0f - (float) directionDegrees + 180.0f) / 360.0f;
 			
 			if (this.type.afraidOfLight && this.level.player.getBattery() > this.type.afraidOfLightBrightness && this.distanceTo(this.level.player) < this.level.player.getLight() * ((Board.WIDTH + Board.HEIGHT) / 2) / 2) {
-				this.direction = 1.0f - this.direction;
+				this.direction += 0.5f;
 			}
 		}
 		

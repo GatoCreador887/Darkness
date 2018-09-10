@@ -384,6 +384,7 @@ public class Level {
 				for (int x = 0; x < line.length(); x++) {
 					int xPos = x * WALL_SIZE;
 					
+<<<<<<< HEAD
 					if (line.charAt(x) != ':' && line.charAt(x) != '-' && line.charAt(x) != '|' && line.charAt(x) != '+' && line.charAt(x) != 'b' && line.charAt(x) != 'S' && line.charAt(x) != 'F') {
 						if (ThreadLocalRandom.current().nextFloat() < this.difficulty / 15.0f) {
 							this.sprites.add(new Ghost(xPos, yPos, this, Ghost.Type.NORMAL));
@@ -411,6 +412,33 @@ public class Level {
 						
 						if (this.difficulty >= 3.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 60.0f) {
 							this.sprites.add(new ObliterationVortex(xPos, yPos, this));
+=======
+					if (this.player.distanceTo(xPos, yPos) > 150.0d) {
+						if (line.charAt(x) != ':' && line.charAt(x) != '-' && line.charAt(x) != '|' && line.charAt(x) != '+' && line.charAt(x) != 'b' && line.charAt(x) != 'S' && line.charAt(x) != 'F') {
+							if (ThreadLocalRandom.current().nextFloat() < this.difficulty / 15.0f) {
+								this.sprites.add(new Ghost(xPos, yPos, this, Ghost.Type.NORMAL));
+							}
+							
+							if (ThreadLocalRandom.current().nextFloat() < this.difficulty / 35.0f) {
+								this.sprites.add(new Zombie(xPos, yPos, this));
+							}
+							
+							if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 40.0f) {
+								this.sprites.add(new Brain(xPos, yPos, this));
+							}
+							
+							if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+								this.sprites.add(new GooBlob(xPos, yPos, this));
+							}
+							
+							if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {
+								this.sprites.add(new Ghost(xPos, yPos, this, Ghost.Type.INFERNAL));
+							}
+							
+							if (this.difficulty >= 3.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 60.0f) {
+								this.sprites.add(new ObliterationVortex(xPos, yPos, this));
+							}
+>>>>>>> master
 						}
 					}
 				}

@@ -42,8 +42,7 @@ public class UIMainMenu extends UI {
 		
 		switch (b.getId()) {
 			case "play":
-				StaticFields.board.setActiveUI(null);
-				StaticFields.board.setLevel(new Level());
+				ui = new UISelectMode();
 				break;
 			case "monsterList":
 				ui = new UIMonsterList();
