@@ -72,7 +72,7 @@ public class Board extends JPanel implements ActionListener {
 	
 	public void mouseClicked(MouseEvent e) {
 		Point p = e.getPoint();
-		p.y -= 30;
+		p.y -= 25;
 		
 		if (this.activeUI != null) {
 			this.activeUI.mouseClicked(e, p);

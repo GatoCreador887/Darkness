@@ -68,8 +68,12 @@ public abstract class Sprite {
 		return new Rectangle((int) this.x, (int) this.y, this.width, this.height);
 	}
 	
+	public double distanceTo(double x, double y) {
+		return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
+	}
+	
 	public double distanceTo(Sprite another) {
-		return Math.sqrt(Math.pow(this.x - another.x, 2) + Math.pow(this.y - another.y, 2));
+		return this.distanceTo(another.x, another.y);
 	}
 	
 	public boolean remove() {
