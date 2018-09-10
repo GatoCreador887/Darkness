@@ -19,6 +19,7 @@ import gatocreador887.darkness.sprite.Ghost;
 import gatocreador887.darkness.sprite.GooBlob;
 import gatocreador887.darkness.sprite.ObliterationVortex;
 import gatocreador887.darkness.sprite.Player;
+import gatocreador887.darkness.sprite.Spikeball;
 import gatocreador887.darkness.sprite.Sprite;
 import gatocreador887.darkness.sprite.Zombie;
 import gatocreador887.darkness.ui.UIMainMenu;
@@ -208,7 +209,13 @@ public class Level {
 	
 	private void init() {
 		this.parseLevel();
-		AudioUtils.playSound(this.getClass().getResource("/sounds/start.wav"), -2.5f);
+		if (this.customLevel == null) {
+			AudioUtils.playSound(this.getClass().getResource("/sounds/start.wav"), -2.5f);
+		} else if (Settings.getAlternateCustomLevelStartSound()) {
+			AudioUtils.playSound(this.getClass().getResource("/sounds/custom_level_start.wav"), 0.0f);
+		} else {
+			AudioUtils.playSound(this.getClass().getResource("/sounds/start.wav"), -2.5f);
+		}
 	}
 	
 	private void parseLevel() {
@@ -267,6 +274,10 @@ public class Level {
 					
 					if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
 						this.sprites.add(new GooBlob(xPos, yPos, this));
+					}
+					
+					if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+						this.sprites.add(new Spikeball(xPos, yPos, this));
 					}
 					
 					if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {
@@ -389,6 +400,10 @@ public class Level {
 							
 							if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
 								this.sprites.add(new GooBlob(xPos, yPos, this));
+							}
+							
+							if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+								this.sprites.add(new Spikeball(xPos, yPos, this));
 							}
 							
 							if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {

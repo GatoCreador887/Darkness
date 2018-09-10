@@ -1,9 +1,14 @@
 package gatocreador887.darkness.ui;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Desktop.Action;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,6 +20,7 @@ import gatocreador887.darkness.sprite.Directioned;
 import gatocreador887.darkness.sprite.Ghost;
 import gatocreador887.darkness.sprite.GooBlob;
 import gatocreador887.darkness.sprite.ObliterationVortex;
+import gatocreador887.darkness.sprite.Spikeball;
 import gatocreador887.darkness.sprite.Sprite;
 import gatocreador887.darkness.sprite.Zombie;
 import gatocreador887.darkness.util.graphics.TransparentGradientInImage;
@@ -28,6 +34,7 @@ public class UIMainMenu extends UI {
 		this.buttons.add(new TextButton(this, "monsterList", Color.DARK_GRAY, Board.WIDTH / 2 + 20, Board.HEIGHT / 2 - 10, 120, 20, "Monsters", Color.WHITE));
 		this.buttons.add(new TextButton(this, "settings", Color.DARK_GRAY, Board.WIDTH / 2 - 30, Board.HEIGHT / 2 + 30, 120, 20, "Settings", Color.WHITE));
 		this.buttons.add(new TextButton(this, "customLevel", Color.DARK_GRAY, Board.WIDTH / 2 - 140, Board.HEIGHT / 2 + 30, 100, 20, "Play Custom Level", Color.WHITE));
+		this.buttons.add(new TextButton(this, "openWiki", Color.DARK_GRAY, Board.WIDTH / 2 + 100, Board.HEIGHT / 2 + 30, 40, 20, "Wiki", Color.WHITE));
 	}
 	
 	protected void buttonClicked(Button b) {
@@ -45,6 +52,28 @@ public class UIMainMenu extends UI {
 				break;
 			case "customLevel":
 				ui = new UICustomLevel();
+				break;
+			case "openWiki":
+				// Credit to StackOverflow users Brajesh Kumar and Kanchu
+				String url = "https://www.github.com/GatoCreador887/Darkness/wiki";
+				if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)){
+		            Desktop desktop = Desktop.getDesktop();
+		            try {
+		                desktop.browse(new URI(url));
+		            } catch (IOException | URISyntaxException e) {
+		            	System.err.println("Unable to open Darkness wiki on GitHub. Stacktrace:");
+		                e.printStackTrace();
+		            }
+		        } else {
+		            Runtime runtime = Runtime.getRuntime();
+		            try {
+		                runtime.exec("xdg-open " + url);
+		            } catch (IOException e) {
+		            	System.err.println("Unable to open Darkness wiki on GitHub. Stacktrace:");
+		                e.printStackTrace();
+		            }
+		        }
+				
 				break;
 		}
 		
@@ -96,6 +125,8 @@ public class UIMainMenu extends UI {
 					directioned = new Ghost(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null, Ghost.Type.INFERNAL);
 				} else if (ThreadLocalRandom.current().nextFloat() < 0.125f) {
 					directioned = new GooBlob(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null);
+				} else if (ThreadLocalRandom.current().nextFloat() < 0.125f) {
+					directioned = new Spikeball(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null);
 				} else if (ThreadLocalRandom.current().nextFloat() < 0.15f) {
 					directioned = new Brain(Board.WIDTH - 1, Board.HEIGHT / 2 - 8, null);
 				} else if (ThreadLocalRandom.current().nextFloat() < 0.3f) {

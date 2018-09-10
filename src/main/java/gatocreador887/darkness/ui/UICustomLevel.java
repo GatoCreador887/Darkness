@@ -1,15 +1,19 @@
 package gatocreador887.darkness.ui;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.Desktop.Action;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class UICustomLevel extends UI {
 		this.buttons.add(new TextButton(this, "play", Color.DARK_GRAY, Board.WIDTH / 2 - 40, Board.HEIGHT / 2 + 30, 80, 20, "Play", Color.WHITE));
 		this.buttons.add(new TextButton(this, "open", Color.DARK_GRAY, Board.WIDTH / 2 - 100, Board.HEIGHT / 2 - 10, 80, 20, "Open", Color.WHITE));
 		this.buttons.add(new TextButton(this, "save", Color.DARK_GRAY, Board.WIDTH / 2 + 20, Board.HEIGHT / 2 - 10, 80, 20, "Save", Color.WHITE));
+		this.buttons.add(new TextButton(this, "openWiki", Color.DARK_GRAY, Board.WIDTH / 2 - 70, Board.HEIGHT / 2 + 70, 140, 20, "Wiki Page For Level Editor", Color.WHITE));
 	}
 	
 	public void keyEvent(KeyEvent e, boolean pressed) {
@@ -189,6 +194,28 @@ public class UICustomLevel extends UI {
 						e.printStackTrace();
 					}
 				}
+				
+				break;
+			case "openWiki":
+				// Credit to StackOverflow users Brajesh Kumar and Kanchu
+				String url = "https://www.github.com/GatoCreador887/Darkness/wiki/Level-Editor";
+				if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)){
+		            Desktop desktop = Desktop.getDesktop();
+		            try {
+		                desktop.browse(new URI(url));
+		            } catch (IOException | URISyntaxException e) {
+		            	System.err.println("Unable to open Darkness wiki page for Level Editor on GitHub. Stacktrace:");
+		                e.printStackTrace();
+		            }
+		        } else {
+		            Runtime runtime = Runtime.getRuntime();
+		            try {
+		                runtime.exec("xdg-open " + url);
+		            } catch (IOException e) {
+		            	System.err.println("Unable to open Darkness wiki page for Level Editor on GitHub. Stacktrace:");
+		                e.printStackTrace();
+		            }
+		        }
 				
 				break;
 		}

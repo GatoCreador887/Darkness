@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import gatocreador887.darkness.StaticFields;
+import gatocreador887.darkness.util.sound.AudioUtils;
 
 public abstract class UI {
 	protected UI parent;
@@ -22,6 +23,7 @@ public abstract class UI {
 				case KeyEvent.VK_ESCAPE:
 					if (this.parent != null) {
 						StaticFields.board.setActiveUI(this.parent);
+						AudioUtils.playSound(this.getClass().getResource("/sounds/click.wav"), 0.0f);
 					}
 					
 					break;
