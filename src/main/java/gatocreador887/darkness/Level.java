@@ -209,7 +209,13 @@ public class Level {
 	
 	private void init() {
 		this.parseLevel();
-		AudioUtils.playSound(this.getClass().getResource("/sounds/start.wav"), -2.5f);
+		if (this.customLevel == null) {
+			AudioUtils.playSound(this.getClass().getResource("/sounds/start.wav"), -2.5f);
+		} else if (Settings.getAlternateCustomLevelStartSound()) {
+			AudioUtils.playSound(this.getClass().getResource("/sounds/custom_level_start.wav"), 0.0f);
+		} else {
+			AudioUtils.playSound(this.getClass().getResource("/sounds/start.wav"), -2.5f);
+		}
 	}
 	
 	private void parseLevel() {

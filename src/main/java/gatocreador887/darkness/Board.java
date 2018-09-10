@@ -38,6 +38,7 @@ public class Board extends JPanel implements ActionListener {
 	}
 	
 	private void init() {
+		Settings.read();
 		this.running = true;
 		this.renderTimer = new Timer(RENDER_DELAY, new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
