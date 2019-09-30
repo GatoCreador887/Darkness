@@ -46,7 +46,7 @@ public class Ghost extends Directioned implements MeleeMonster {
 			double directionDegrees = Math.toDegrees(Math.atan2(this.level.player.x - this.x, this.level.player.y - this.y));
 			this.direction = (270.0f - (float) directionDegrees + 180.0f) / 360.0f;
 			
-			if (this.type.afraidOfLight && this.level.player.getBattery() > this.type.afraidOfLightBrightness && this.distanceTo(this.level.player) < this.level.player.getLight() * ((Board.WIDTH + Board.HEIGHT) / 2) / 2) {
+			if ((this.type.afraidOfLight && this.level.player.getBattery() > this.type.afraidOfLightBrightness && this.distanceTo(this.level.player) < this.level.player.getLight() * ((Board.WIDTH + Board.HEIGHT) / 2) / 2 * 0.75f) || this.level.player.hasTorch()) {
 				this.direction += 0.5f;
 			}
 		}
@@ -59,17 +59,23 @@ public class Ghost extends Directioned implements MeleeMonster {
 		this.y += addedY;
 	}
 	
+	public boolean doesWallCheck() {
+		return this.type.doWallCheck;
+	}
+	
 	public enum Type {
-		NORMAL(true, 0.8f, "Ghost"),
-		INFERNAL(false, 0.0f, "Infernal Ghost");
+		NORMAL(true, 0.8f, false, "Ghost"),
+		INFERNAL(false, 0.0f, true, "Infernal Ghost");
 		
 		public final boolean afraidOfLight;
 		public final float afraidOfLightBrightness;
+		public final boolean doWallCheck;
 		public final String name;
 		
-		private Type(boolean afraidOfLight, float afraidOfLightBrightness, String name) {
+		private Type(boolean afraidOfLight, float afraidOfLightBrightness, boolean doWallCheck, String name) {
 			this.afraidOfLight = afraidOfLight;
 			this.afraidOfLightBrightness = afraidOfLightBrightness;
+			this.doWallCheck = doWallCheck;
 			this.name = name;
 		}
 	}

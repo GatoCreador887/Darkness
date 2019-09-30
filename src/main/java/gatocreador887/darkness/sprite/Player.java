@@ -29,12 +29,13 @@ public class Player extends Sprite {
 	private boolean invulnerable;
 	private boolean switchingLevel;
 	private String levelSwitchText = "";
+	private float torchBurn;
 	public Sprite killer;
 	
 	public Player(double x, double y, Level level) {
 		super(x, y, level);
 		
-		this.speed = 1.5d;
+		this.speed = 1.6d;
 		this.image = NORMAL_IMAGE;
 		this.width = 16;
 		this.height = 16;
@@ -48,6 +49,7 @@ public class Player extends Sprite {
 		this.speed = oldPlayer.speed;
 		this.frightened = oldPlayer.frightened;
 		this.invulnerable = oldPlayer.invulnerable;
+		this.torchBurn = oldPlayer.torchBurn;
 	}
 	
 	public String getName() {
@@ -73,27 +75,33 @@ public class Player extends Sprite {
 				this.level.incrementScore(1);
 			}
 			
-			this.battery -= 0.00015f;
+			if (!this.hasTorch()) {
+				this.battery -= 0.00015f;
+			}
 		}
 		
 		if (this.battery < 0.0f) {
 			this.battery = 0.0f;
 		}
 		
+		if (this.hasTorch()) {
+			this.torchBurn -= 0.001f;
+		}
+		
 		double speed = this.speed;
 		
 		if (this.isFrightened()) {
-			speed *= 1.25d;
+			speed *= 1.3d;
 		}
 		
 		if (this.moveLeft && !this.moveUp && !this.moveDown) {
 			this.x -= speed;
 		} else if (this.moveLeft) {
-			this.x -= speed / 2;
+			this.x -= speed * 0.75d;
 		} else if (this.moveRight && !this.moveUp && !this.moveDown) {
 			this.x += speed;
 		} else if (this.moveRight) {
-			this.x += speed / 2;
+			this.x += speed * 0.75d;
 		}
 		
 		if (this.moveUp && !this.moveLeft && !this.moveRight) {
@@ -124,10 +132,11 @@ public class Player extends Sprite {
 					Battery b = (Battery) s;
 					
 					if (b.getType() == Battery.Type.REGULAR) {
-						this.battery += 0.25f;
+						this.battery += 0.2f;
 						this.level.incrementScore(15);
 						AudioUtils.playSound(this.getClass().getResource("/sounds/battery_regular_collect.wav"), -5.0f);
-						this.level.hoverTexts.add(new HoverText("+0.25B", Color.LIGHT_GRAY, (int) b.x, (int) b.y, step + 50));
+						this.level.hoverTexts.add(new HoverText("+1B", Color.LIGHT_GRAY, (int) b.x, (int) b.y, step + 50));
+						this.level.hoverTexts.add(new HoverText("+15", Color.LIGHT_GRAY, (int) b.x, (int) b.y + 10, step + 50));
 					}
 					
 					if (this.battery > 1.0f) {
@@ -135,21 +144,33 @@ public class Player extends Sprite {
 					}
 					
 					b.setRemove();
-				} else if (!this.invulnerable && (s instanceof MeleeMonster || s instanceof MonsterProjectile)) {
-					this.killer = s;
-					this.setRemove();
+				} else if (s instanceof Torch) {
+					this.torchBurn = 1.0f;
+					this.level.incrementScore(30);
+					AudioUtils.playSound(this.getClass().getResource("/sounds/torch_collect.wav"), -5.0f);
+					this.level.hoverTexts.add(new HoverText("+30", Color.LIGHT_GRAY, (int) s.x, (int) s.y, step + 50));
+					s.setRemove();
+				} else if (s instanceof MeleeMonster || s instanceof MonsterProjectile) {
+					if (this.hasTorch()) {
+						s.setRemove();
+						this.level.incrementScore(75);
+						this.level.hoverTexts.add(new HoverText("+75", Color.LIGHT_GRAY, (int) s.x, (int) s.y, step + 50));
+					} else if (!this.invulnerable) {
+						this.killer = s;
+						this.setRemove();
+					}
 				}
 			}
 		}
 		
-		if (dist < 500.0d) {
-			double freq = dist / 500.0d;
+		if (dist < 150.0d) {
+			double freq = dist / 150.0d;
 			
 			if (freq < 0.05d) {
 				freq = 0.05d;
 			}
 			
-			if (step % (int) (freq * 500) == 0) {
+			if (step % (int) (freq * 150) == 0) {
 				AudioUtils.playSound(this.getClass().getResource("/sounds/alarm.wav"), -10.0f);
 			}
 			
@@ -243,7 +264,7 @@ public class Player extends Sprite {
 	}
 	
 	public float getLight() {
-		return this.light;
+		return this.torchBurn > 0.1f ? 0.3f : (this.hasTorch() ? 0.25f : this.light);
 	}
 	
 	public void setLight(float light) {
@@ -278,5 +299,9 @@ public class Player extends Sprite {
 	
 	public Sprite getNearbyMonster() {
 		return this.nearbyMonster;
+	}
+	
+	public boolean hasTorch() {
+		return this.torchBurn > 0.0f;
 	}
 }

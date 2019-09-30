@@ -33,6 +33,10 @@ public class Brain extends Directioned implements MeleeMonster {
 		if (this.level != null && this.distanceTo(this.level.player) < 200.0d) {
 			double directionDegrees = Math.toDegrees(Math.atan2(this.level.player.x - this.x, this.level.player.y - this.y));
 			this.direction = (270.0f - (float) directionDegrees + 180.0f) / 360.0f;
+			
+			if (this.level.player.hasTorch()) {
+				this.direction += 0.5f;
+			}
 		}
 		
 		if ((step + this.randomMoveOffset + ThreadLocalRandom.current().nextInt(2)) % 20 <= 4) {

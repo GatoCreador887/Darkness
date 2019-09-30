@@ -21,6 +21,7 @@ import gatocreador887.darkness.sprite.ObliterationVortex;
 import gatocreador887.darkness.sprite.Player;
 import gatocreador887.darkness.sprite.Spikeball;
 import gatocreador887.darkness.sprite.Sprite;
+import gatocreador887.darkness.sprite.Torch;
 import gatocreador887.darkness.sprite.Zombie;
 import gatocreador887.darkness.ui.UIMainMenu;
 import gatocreador887.darkness.util.graphics.HoverText;
@@ -250,14 +251,18 @@ public class Level {
 					this.walls.add(new Rectangle(xPos, yPos - (int) (WALL_SIZE / 2.5), WALL_SIZE / 4, WALL_SIZE));
 				} else if (line.charAt(x) == 'b') {
 					this.sprites.add(new Battery(xPos, yPos, this, Battery.Type.REGULAR));
+				} else if (line.charAt(x) == 't') {
+					this.sprites.add(new Torch(xPos, yPos, this));
 				} else if (line.charAt(x) == 'S') {
 					startX = xPos;
 					startY = yPos;
 				} else if (line.charAt(x) == 'F') {
 						this.finishPoint = new Point(xPos, yPos);
 				} else {
-					if (ThreadLocalRandom.current().nextFloat() < 0.03f / (this.difficulty / 4.0f)) {
+					if (ThreadLocalRandom.current().nextFloat() < 0.005f / (this.difficulty / 4.0f)) {
 						this.sprites.add(new Battery(xPos, yPos, this, Battery.Type.REGULAR));
+					} else if (ThreadLocalRandom.current().nextFloat() < 0.0025f * (1.0f + this.difficulty / 4.0f)) {
+						this.sprites.add(new Torch(xPos, yPos, this));
 					}
 					
 					if (ThreadLocalRandom.current().nextFloat() < this.difficulty / 15.0f) {
@@ -268,23 +273,23 @@ public class Level {
 						this.sprites.add(new Zombie(xPos, yPos, this));
 					}
 					
-					if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 40.0f) {
+					if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 40.0f) {
 						this.sprites.add(new Brain(xPos, yPos, this));
 					}
 					
-					if (this.difficulty >= 1.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+					if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 50.0f) {
 						this.sprites.add(new GooBlob(xPos, yPos, this));
 					}
 					
-					if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 42.5f) {
+					if (this.difficulty >= 1.75f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {
 						this.sprites.add(new Spikeball(xPos, yPos, this));
 					}
 					
-					if (this.difficulty >= 2.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 45.0f) {
+					if (this.difficulty >= 2.5f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 55.0f) {
 						this.sprites.add(new Ghost(xPos, yPos, this, Ghost.Type.INFERNAL));
 					}
 					
-					if (this.difficulty >= 3.0f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 60.0f) {
+					if (this.difficulty >= 3.25f && ThreadLocalRandom.current().nextFloat() < this.difficulty / 60.0f) {
 						this.sprites.add(new ObliterationVortex(xPos, yPos, this));
 					}
 				}
@@ -426,6 +431,11 @@ public class Level {
 		g2d.setColor(Color.GRAY);
 		g2d.fillRect(0, 0, Board.WIDTH, Board.HEIGHT);
 		g2d.drawImage(this.player.getImage(), Board.WIDTH / 2 - this.player.getHitbox().width / 2, Board.HEIGHT / 2 - this.player.getHitbox().height / 2, StaticFields.board);
+		
+		if (this.player.hasTorch()) {
+			g2d.drawImage(Torch.IMAGE, Board.WIDTH / 2 - this.player.getHitbox().width / 2 - 1, Board.HEIGHT / 2 - this.player.getHitbox().height / 2 - 2, StaticFields.board);
+		}
+		
 		g2d.setColor(Color.BLACK);
 		
 		int transX = (int) -this.player.getX() + Board.WIDTH / 2 - this.player.getHitbox().width / 2;
@@ -477,6 +487,7 @@ public class Level {
 			g2d.setColor(Color.RED);
 		}
 		
+		g2d.drawString(Integer.toString((int) Math.floor(1 + this.player.getBattery() * 5)), (int) ((1.0f - this.player.getLight()) * Board.WIDTH / 2) - 30, Board.HEIGHT / 2 - 35);
 		g2d.fillRect((int) ((1.0f - this.player.getLight()) * Board.WIDTH / 2) - 30, Board.HEIGHT / 2 - 24 + (int) (50 * (1.0f - this.player.getBattery())), 10, (int) (50 * this.player.getBattery()));
 		g2d.setColor(Color.LIGHT_GRAY);
 		g2d.drawRect((int) ((1.0f - this.player.getLight()) * Board.WIDTH / 2) - 30, Board.HEIGHT / 2 - 25, 10, 50);

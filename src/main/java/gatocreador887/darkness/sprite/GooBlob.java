@@ -33,9 +33,13 @@ public class GooBlob extends Directioned implements MeleeMonster, ProjectileMons
 		if (this.level != null && this.distanceTo(this.level.player) < 200.0d) {
 			double directionDegrees = Math.toDegrees(Math.atan2(this.level.player.x - this.x, this.level.player.y - this.y));
 			this.direction = (270.0f - (float) directionDegrees + 180.0f) / 360.0f;
+			
+			if (this.level.player.hasTorch()) {
+				this.direction += 0.5f;
+			}
 		}
 		
-		if ((step + this.randomMoveOffset + ThreadLocalRandom.current().nextInt(4)) % 30 == 0 && this.level != null && this.distanceTo(this.level.player) <= 125.0d) {
+		if ((step + this.randomMoveOffset + ThreadLocalRandom.current().nextInt(4)) % 30 == 0 && this.level != null && this.distanceTo(this.level.player) <= 125.0d && !this.level.player.hasTorch()) {
 			this.level.sprites.add(new GooProjectile(this.x, this.y, this, this.direction, 2.5d));
 		}
 		
@@ -44,7 +48,7 @@ public class GooBlob extends Directioned implements MeleeMonster, ProjectileMons
 			double addedX = Math.cos(phi) * 0.5d;
 			double addedY = Math.sin(phi) * 0.5d;
 			
-			if (this.level != null ? this.distanceTo(this.level.player) > 125.0d : true) {
+			if (this.level != null ? this.distanceTo(this.level.player) > 125.0d || this.level.player.hasTorch() : true) {
 				this.x += addedX;
 				this.y += addedY;
 			}

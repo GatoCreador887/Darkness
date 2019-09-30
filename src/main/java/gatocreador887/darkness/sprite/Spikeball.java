@@ -44,6 +44,10 @@ public class Spikeball extends Directioned implements MeleeMonster, ProjectileMo
 		if (this.level != null && this.distanceTo(this.level.player) < 175.0d) {
 			double directionDegrees = Math.toDegrees(Math.atan2(this.level.player.x - this.x, this.level.player.y - this.y));
 			this.direction = (270.0f - (float) directionDegrees + 180.0f) / 360.0f;
+			
+			if (this.level.player.hasTorch()) {
+				this.direction += 0.5f;
+			}
 		}
 		
 		if ((step + this.randomShootOffset + ThreadLocalRandom.current().nextInt(4)) % 30 == 0 && this.level != null && this.distanceTo(this.level.player) <= 75.0d) {

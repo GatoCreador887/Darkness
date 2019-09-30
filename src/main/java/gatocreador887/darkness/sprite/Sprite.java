@@ -23,7 +23,7 @@ public abstract class Sprite {
 	public abstract String getName();
 	
 	public void update(int step) {
-		if (this.level != null) {
+		if (this.doesWallCheck() && this.level != null) {
 			for (Rectangle wall : this.level.walls) {
 				if (this.getHitbox().intersects(wall)) {
 					this.onImpact();
@@ -45,6 +45,10 @@ public abstract class Sprite {
 	}
 	
 	protected void onImpact() {
+	}
+	
+	public boolean doesWallCheck() {
+		return true;
 	}
 	
 	public double getX() {
